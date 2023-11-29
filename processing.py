@@ -7,6 +7,14 @@ random.seed(42)
 np.random.seed(42)
 
 
+mileage_mean = 27.02
+engine_mean = 1248.0
+max_power_mean = 81.86
+torque_mean = 153.0
+rpm_mean = 3100.0
+seat_mean = 5.0
+
+
 def processing(dfc, train_df=None):
     df = dfc.copy()
     
