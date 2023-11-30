@@ -15,40 +15,26 @@ rpm_mean = 3100.0
 seat_mean = 5.0
 
 
-def processing(dfc, train_df=None):
+def processing(dfc):
     df = dfc.copy()
-    
     mileage = list()
     for value in df.mileage:
         if type(value)==str:
             if value.endswith("km/kg"):
-                mileage.append(float(value.replace("km/kg","")))
+                mileage.append(float(value.replace("km/kg", "")))
             if value.endswith("kmpl"):
                 mileage.append(float(value.replace("kmpl", ""))*1.4)
         else:
             mileage.append(value)
     df.mileage = mileage
-    if train_df is not None:
-        mileage_mean = train_df[train_df.mileage.notna()].mileage.astype(float).median()
-    else:
-        mileage_mean = df[df.mileage.notna()].mileage.astype(float).median()
     df.mileage.fillna(mileage_mean, inplace=True)
     df.mileage = df.mileage.astype(float)
-    
-    df.engine = df.engine.apply(lambda x: x.replace("CC", "") if type(x)==str else x) 
-    if train_df is not None:
-        engine_mean = train_df[train_df.engine.notna()].engine.astype(float).median()
-    else:
-        engine_mean = df[df.engine.notna()].engine.astype(float).median()
+    df.engine = df.engine.apply(lambda x: x.replace("CC", "") if type(x)==str else x)
     df.engine.fillna(engine_mean, inplace=True)
     df.engine = df.engine.astype(int)
     
     df.max_power = df.max_power.apply(lambda x: x.replace("bhp", "") if type(x)==str else x)
     df.max_power = df.max_power.replace(r'^\s+$', np.nan, regex=True)
-    if train_df is not None:
-        max_power_mean = train_df[train_df.max_power.notna()].max_power.astype(float).median()
-    else:
-        max_power_mean = df[df.max_power.notna()].max_power.astype(float).median()
     df.max_power.fillna(max_power_mean, inplace=True)
     df.max_power = df.max_power.astype(float)
     
@@ -81,10 +67,6 @@ def processing(dfc, train_df=None):
             torq.append(val)
             rpm.append(np.NAN)
     df.torque = torq
-    if train_df is not None:
-        torque_mean = train_df[train_df.torque.notna()].torque.median()
-    else:
-        torque_mean = df[df.torque.notna()].torque.median()
     df.torque.fillna(torque_mean, inplace=True)
     df.torque = df.torque.astype(float)
     for i, val in enumerate(rpm):
@@ -100,31 +82,24 @@ def processing(dfc, train_df=None):
             else:
                 rpm[i] = np.NAN
     df['max_torque_rpm'] = rpm
-    if train_df is not None:
-        rpm_mean = train_df[train_df.max_torque_rpm.notna()].max_torque_rpm.astype(int).median()
-    else:
-        rpm_mean = df[df.max_torque_rpm.notna()].max_torque_rpm.astype(int).median()
     df.max_torque_rpm.fillna(rpm_mean, inplace=True)
     df.max_torque_rpm = df.max_torque_rpm.astype(float)
-    
-    if train_df is not None:
-        seat_mean = train_df[train_df.seats.notna()].seats.astype(int).median()
-    else:
-        seat_mean = df[df.seats.notna()].seats.astype(int).median()
+
     df.seats.fillna(seat_mean, inplace=True)
     df.seats = df.seats.astype(int)
     
     return df
 
 
-
 def hp_per_liter(df):
     return df.max_power/(df.engine/1000)
+
 
 def power_year(df_orig):
     df = df_orig.copy()
     np.power(df_orig.year,2)
     return df
+
 
 def add_lux_brands(df):
     luxury_brands = ["audi", "aston", "bentley", "bmw", "ferrari", "jaguar",
@@ -136,3 +111,19 @@ def add_lux_brands(df):
     for brand in brands:
         lux_brand_col.append(brand in luxury_brands)
     return lux_brand_col
+
+def del_columns(df_orig):
+    df = df_orig.copy()
+    del_columns = ['transmission_Manual', 'fuel_CNG',
+                   'seller_type_Trustmark Dealer', 'owner_Test Drive Car']
+    return df.drop(columns=del_columns)
+
+
+def scale_df(df_orig, scaler):
+    df = df_orig.copy()
+    col_to_scale = ['year', 'km_driven',
+                    'mileage', 'engine', 'max_power', 'torque',
+                    'max_torque_rpm']
+    df_scaled = scaler.transform(df.loc[:, col_to_scale].to_numpy())
+    df.loc[:, col_to_scale] = df_scaled
+    return df

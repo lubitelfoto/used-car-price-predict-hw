@@ -1,0 +1,11 @@
+name,year,km_driven,fuel,seller_type,transmission,owner,mileage,engine,max_power,torque,seats
+Hyundai i20 Magna 1.2,2016,14000,Petrol,Individual,Manual,Second Owner,18.6 kmpl,1197 CC,81.83 bhp,114.7Nm@ 4000rpm,5.0
+Maruti 800 Std,1999,40000,Petrol,Individual,Manual,Second Owner,16.1 kmpl,796 CC,37 bhp,59Nm@ 2500rpm,4.0
+Maruti Ritz VDi,2010,120000,Diesel,Individual,Manual,First Owner,21.1 kmpl,1248 CC,73.9 bhp,113Nm@ 4500rpm,5.0
+Hyundai Grand i10 Magna,2015,70000,Petrol,Individual,Manual,First Owner,18.9 kmpl,1197 CC,82 bhp,114Nm@ 4000rpm,5.0
+Volkswagen Ameo 1.0 MPI Trendline,2019,13000,Petrol,Individual,Manual,First Owner,19.44 kmpl,999 CC,75 bhp,95Nm@ 3000-4300rpm,5.0
+Maruti Swift Dzire VXI,2014,35000,Petrol,Individual,Manual,First Owner,19.1 kmpl,1197 CC,85.8 bhp,114Nm@ 4000rpm,5.0
+Hyundai Xcent 1.2 Kappa S,2016,44000,Petrol,Individual,Manual,Second Owner,19.1 kmpl,1197 CC,82 bhp,114Nm@ 4000rpm,5.0
+Honda City 1.5 EXI,2005,120000,Petrol,Individual,Manual,Second Owner,13.0 kmpl,1493 CC,100 bhp,13.1kgm@ 4600rpm,5.0
+Toyota Corolla Altis Diesel D4DG,2010,60000,Diesel,Individual,Manual,First Owner,21.43 kmpl,1364 CC,87.2 bhp,205Nm@ 1800-2800rpm,5.0
+Daewoo Matiz SD,2000,60000,Petrol,Individual,Manual,First Owner,18.5 kmpl,796 CC,53 bhp,71Nm@ 3500rpm,5.0
